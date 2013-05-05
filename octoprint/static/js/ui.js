@@ -664,6 +664,7 @@ function GcodeFilesViewModel() {
     self.isError = ko.observable(undefined);
     self.isReady = ko.observable(undefined);
     self.isLoading = ko.observable(undefined);
+    self.currentPrintElement = 0;
 
     // initialize list helper
     self.listHelper = new ItemListHelper(
@@ -703,8 +704,9 @@ function GcodeFilesViewModel() {
             // Print next file.
             self.currentPrintElement += 1;
         }
+
         self.loadFile(
-            self.listHelper['gcodeFiles'][self.currentPrintElement]['name'],
+            self.listHelper['allItems'][self.currentPrintElement]['name'],
             true
         );
     }
