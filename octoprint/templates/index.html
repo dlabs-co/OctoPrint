@@ -150,6 +150,24 @@
                                     <span>Upload</span>
                                     <input id="gcode_upload" type="file" name="gcode_file" class="fileinput-button" data-url="/ajax/gcodefiles/upload">
                                 </span>
+
+                                <div id="auto_printing_actions">
+                                    <button class="btn btn-danger
+                                            btn-block"
+                                            data-bind="click:function(){
+                                            $root.printNextFile(false);}">
+                                        <i class="icon-retweet"></i>
+                                        <span>Retry print</span>
+                                    </button>
+
+                                    <button class="btn btn-success
+                                            btn-block"
+                                            data-bind="click:function(){
+                                            $root.printNextFile(true);}">
+                                        <i class="icon-step-forward"></i>
+                                        <span>Print next</span>
+                                    </button>
+                                </div>
                                 <div id="gcode_upload_progress" class="progress" style="width: 100%;">
                                     <div class="bar" style="width: 0%"></div>
                                 </div>

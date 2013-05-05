@@ -698,6 +698,17 @@ function GcodeFilesViewModel() {
         CONFIG_GCODEFILESPERPAGE
     );
 
+    self.printNextFile = function(continue_print){
+        if (continue_print){
+            // Print next file.
+            self.currentPrintElement += 1;
+        }
+        self.loadFile(
+            self.listHelper['gcodeFiles'][self.currentPrintElement]['name'],
+            true
+        );
+    }
+
     self.isLoadActionPossible = ko.computed(function() {
         return !self.isPrinting() && !self.isPaused() && !self.isLoading();
     });
@@ -1458,17 +1469,17 @@ $(function() {
         var navigationViewModel = new NavigationViewModel(appearanceViewModel, settingsViewModel);
 
         var dataUpdater = new DataUpdater(
-            connectionViewModel, 
-            printerStateViewModel, 
-            temperatureViewModel, 
-            controlsViewModel, 
-            speedViewModel, 
+            connectionViewModel,
+            printerStateViewModel,
+            temperatureViewModel,
+            controlsViewModel,
+            speedViewModel,
             terminalViewModel,
             gcodeFilesViewModel,
             webcamViewModel,
             gcodeViewModel
         );
-        
+
         //work around a stupid iOS6 bug where ajax requests get cached and only work once, as described at http://stackoverflow.com/questions/12506897/is-safari-on-ios-6-caching-ajax-results
         $.ajaxSetup({
 		    type: 'POST',
