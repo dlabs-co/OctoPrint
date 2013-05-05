@@ -699,10 +699,22 @@ function GcodeFilesViewModel() {
         CONFIG_GCODEFILESPERPAGE
     );
 
+    self.deleteAllFiles = function(){
+        for (var i =  0; i < self.listHelper['allItems'].length; i++){
+            self.removeFile(self.listHelper['allItems'][i]['name']);
+        }
+    }
+
     self.printNextFile = function(continue_print){
         if (continue_print){
             // Print next file.
-            self.currentPrintElement += 1;
+            if (self.currentPrintElement < self.listHelper['allItems'].length){
+                self.currentPrintElement += 1;
+            } else {
+                // TODO this must be in the view too, like
+                // "print first file" instead of next.
+                self.currentPrintElement = 0;
+            }
         }
 
         self.loadFile(
