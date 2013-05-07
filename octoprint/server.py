@@ -22,7 +22,7 @@ BASEURL = "/ajax/"
 app = Flask("octoprint")
 # Only instantiated by the Server().run() method
 # In order that threads don't start too early when running as a Daemon
-printer = None 
+printer = None
 gcodeManager = None
 
 #~~ Printer state

@@ -68,7 +68,8 @@ default_settings = {
 	},
 	"controls": [],
 	"system": {
-		"actions": []
+		"actions": [],
+        "slicer" : "slic3r --foo --bar",
 	}
 }
 

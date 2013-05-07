@@ -5,6 +5,7 @@ __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agp
 import os
 import Queue
 import threading
+import subprocess
 import datetime
 import yaml
 import time
@@ -113,7 +114,24 @@ class GcodeManager:
 
 	#~~ file handling
 
+	def isSlt(self, file):
+		return file.filename.endswith('.stl')
+
+	def sliceStl(self, file):
+		tmp_file = "/tmp/fixme"
+		file.save(tmp_file)
+		subprocess.Popen(
+			[settings().get(['system', 'slicer']), tmp_file],
+			stdout=subprocess.PIPE)
+		stdout, stderr = subprocess.communicate()
+		with open(tmp_file, 'w') as file_:
+			file_.write(stdout)
+		file = open(tmp_file, 'r') # This would probably not work.
+		# Was file a kind of flask foo there?
+
 	def addFile(self, file):
+		if self.isStl(file):
+			file=self.sliceStl(file)
 		if file:
 			absolutePath = self.getAbsolutePath(file.filename, mustExist=False)
 			if absolutePath is not None:
