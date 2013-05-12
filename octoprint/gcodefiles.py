@@ -119,14 +119,15 @@ class GcodeManager:
 		return file.filename.endswith('.stl')
 
 	def sliceStl(self, file, path):
-		slicer = settings().get(['system', 'slicer'])
 		tmp_file = "/tmp/fixme"
 		file.save(tmp_file)
-		self._logger.info('Slicing file with %s', slicer)
-		subprocess.Popen(
-			[slicer, tmp_file],
+		slicer = settings().get(['slicer', 'slicer_script'])
+		self._logger.info('Slicing file %s with /usr/bin/%s' % (file, slicer))
+		slice_ = subprocess.Popen(
+			["/usr/bin/" + slicer, tmp_file,
+			settings().get(['slicer', 'slicer_host'])],
 			stdout=subprocess.PIPE)
-		stdout, stderr = subprocess.communicate()
+		stdout, stderr = slice_.communicate()
 		with open(path, 'w') as file_:
 			file_.write(stdout)
 
