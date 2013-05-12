@@ -119,17 +119,17 @@ class GcodeManager:
 		return file.filename.endswith('.stl')
 
 	def sliceStl(self, file, path):
-		tmp_file = "/tmp/fixme"
+		tmp_file = "/tmp/currently_slicing" # FIXME
 		file.save(tmp_file)
 		slicer = settings().get(['slicer', 'slicer_script'])
-		self._logger.info('Slicing file %s with /usr/bin/%s' % (file, slicer))
+		self._logger.info('Slicing file %s with /usr/bin/%s' % (tmp_file, slicer))
 		slice_ = subprocess.Popen(
 			["/usr/bin/" + slicer, tmp_file,
-			settings().get(['slicer', 'slicer_host'])],
+			settings().get(['slicer', 'slicer_host']),
+			path],
 			stdout=subprocess.PIPE)
-		stdout, stderr = slice_.communicate()
-		with open(path, 'w') as file_:
-			file_.write(stdout)
+		stdout = slice_.communicate()
+		self._logger.info(stdout)
 
 	def addFile(self, file):
 		if file:
@@ -145,7 +145,8 @@ class GcodeManager:
 					self._metadataDirty = True
 					self._saveMetadata()
 				else:
-					file.save(absolutePath)
+					if not self.isStl:
+						file.save(absolutePath)
 				self._metadataAnalyzer.addFileToQueue(os.path.basename(absolutePath))
 				return self._getBasicFilename(absolutePath)
 		return None
