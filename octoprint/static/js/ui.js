@@ -1003,6 +1003,9 @@ function SettingsViewModel() {
 
     self.system_actions = ko.observableArray([]);
 
+    self.slicer_host = ko.observable(undefined);
+    self.slicer_script = ko.observable(undefined);
+
     self.addTemperatureProfile = function() {
             self.temperature_profiles.push({name: "New", extruder:0, bed:0});
         };
@@ -1046,6 +1049,9 @@ function SettingsViewModel() {
         self.temperature_profiles(response.temperature.profiles);
 
         self.system_actions(response.system.actions);
+
+        self.slicer_script(response.slicer.script);
+        self.slicer_host(response.slicer.host);
     }
 
     self.saveData = function() {
@@ -1082,6 +1088,10 @@ function SettingsViewModel() {
             },
             "system": {
                 "actions": self.system_actions()
+            },
+            "slicer": {
+                "script": self.slicer_script(),
+                "host": self.slicer_host()
             }
         }
 
@@ -1458,17 +1468,17 @@ $(function() {
         var navigationViewModel = new NavigationViewModel(appearanceViewModel, settingsViewModel);
 
         var dataUpdater = new DataUpdater(
-            connectionViewModel, 
-            printerStateViewModel, 
-            temperatureViewModel, 
-            controlsViewModel, 
-            speedViewModel, 
+            connectionViewModel,
+            printerStateViewModel,
+            temperatureViewModel,
+            controlsViewModel,
+            speedViewModel,
             terminalViewModel,
             gcodeFilesViewModel,
             webcamViewModel,
             gcodeViewModel
         );
-        
+
         //work around a stupid iOS6 bug where ajax requests get cached and only work once, as described at http://stackoverflow.com/questions/12506897/is-safari-on-ios-6-caching-ajax-results
         $.ajaxSetup({
 		    type: 'POST',

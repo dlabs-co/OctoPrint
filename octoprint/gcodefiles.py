@@ -121,11 +121,11 @@ class GcodeManager:
 	def sliceStl(self, file, path):
 		tmp_file = "/tmp/currently_slicing" # FIXME
 		file.save(tmp_file)
-		slicer = settings().get(['slicer', 'slicer_script'])
+		slicer = settings().get(['slicer', 'script'])
 		self._logger.info('Slicing file %s with /usr/bin/%s' % (tmp_file, slicer))
 		slice_ = subprocess.Popen(
 			["/usr/bin/" + slicer, tmp_file,
-			settings().get(['slicer', 'slicer_host']),
+			settings().get(['slicer', 'host']),
 			path],
 			stdout=subprocess.PIPE)
 		stdout = slice_.communicate()

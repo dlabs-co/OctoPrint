@@ -12,6 +12,7 @@
                 <li><a href="#settings_folder" data-toggle="tab">Folder</a></li>
                 <li><a href="#settings_temperature" data-toggle="tab">Temperature</a></li>
                 <li><a href="#settings_appearance" data-toggle="tab">Appearance</a></li>
+                <li><a href="#settings_slicer" data-toggle="tab">Slicing</a></li>
             </ul>
 
             <div class="tab-content">
@@ -180,6 +181,23 @@
                             <div class="controls">
                                 <select id="settings-appearanceColor" data-bind="value: appearance_color, options: appearance_available_colors">
                                 </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane" id="settings_slicer">
+                    <form class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="settings-slicerScript">Slicer</label>
+                            <div class="controls">
+                                <input type="text" class="input-block-level" data-bind="value: slicer_script" id="settings-slicerScript">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"
+									for="settings-slicerHost">Remote server</label>
+                            <div class="controls">
+                                <input type="text" class="input-block-level" data-bind="value: slicer_host" id="settings-slicerHost">
                             </div>
                         </div>
                     </form>

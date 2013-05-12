@@ -375,6 +375,10 @@ def getSettings():
 		},
 		"system": {
 			"actions": s.get(["system", "actions"])
+		},
+		"slicer": {
+			"script": s.get(["slicer", "script"]),
+			"host": s.get(["slicer", "host"]),
 		}
 	})
 

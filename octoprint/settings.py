@@ -71,8 +71,8 @@ default_settings = {
 		"actions": [],
 	},
     "slicer": {
-        "slicer_script" : "remote_slicer",
-        "slicer_host" : "localhost"
+        "script" : "remote_slicer",
+        "host" : "localhost"
     }
 }
 
