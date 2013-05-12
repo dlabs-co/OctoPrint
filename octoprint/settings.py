@@ -69,8 +69,11 @@ default_settings = {
 	"controls": [],
 	"system": {
 		"actions": [],
-        "slicer" : "slic3r --foo --bar",
-	}
+	},
+    "slicer": {
+        "slicer_script" : "remote_slicer HOST FILE",
+        "slicer_host" : "localhost"
+    }
 }
 
 valid_boolean_trues = ["true", "yes", "y", "1"]
