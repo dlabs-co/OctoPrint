@@ -114,33 +114,37 @@ class GcodeManager:
 
 	#~~ file handling
 
-	def isSlt(self, file):
+	def isStl(self, file):
+		self._logger.info('Ok')
 		return file.filename.endswith('.stl')
 
-	def sliceStl(self, file):
+	def sliceStl(self, file, path):
+		slicer = settings().get(['system', 'slicer'])
 		tmp_file = "/tmp/fixme"
 		file.save(tmp_file)
+		self._logger.info('Slicing file with %s', slicer)
 		subprocess.Popen(
-			[settings().get(['system', 'slicer']), tmp_file],
+			[slicer, tmp_file],
 			stdout=subprocess.PIPE)
 		stdout, stderr = subprocess.communicate()
-		with open(tmp_file, 'w') as file_:
+		with open(path, 'w') as file_:
 			file_.write(stdout)
-		file = open(tmp_file, 'r') # This would probably not work.
-		# Was file a kind of flask foo there?
 
 	def addFile(self, file):
-		if self.isStl(file):
-			file=self.sliceStl(file)
 		if file:
 			absolutePath = self.getAbsolutePath(file.filename, mustExist=False)
 			if absolutePath is not None:
+				if self.isStl(file):
+					self._logger.info('Ok')
+					self.sliceStl(file, absolutePath + ".gcode")
+					absolutePath += ".gcode"
 				if file.filename in self._metadata.keys():
 					# delete existing metadata entry, since the file is going to get overwritten
 					del self._metadata[file.filename]
 					self._metadataDirty = True
 					self._saveMetadata()
-				file.save(absolutePath)
+				else:
+					file.save(absolutePath)
 				self._metadataAnalyzer.addFileToQueue(os.path.basename(absolutePath))
 				return self._getBasicFilename(absolutePath)
 		return None
@@ -171,7 +175,7 @@ class GcodeManager:
 		"""
 		filename = self._getBasicFilename(filename)
 
-		if not util.isAllowedFile(filename, set(["gcode"])):
+		if not util.isAllowedFile(filename, set(["gcode", "stl"])):
 			return None
 
 		secure = os.path.join(self._uploadFolder, secure_filename(self._getBasicFilename(filename)))
