@@ -3,4 +3,5 @@
 filename=$(mktemp).stl;
 cat $1| ssh $2 "cat /dev/stdin > $filename; \
     python /usr/share/skeinforge/skeinforge_application/skeinforge_utilities/skeinforge_craft.py $filename &>/dev/null; \
-    cat ${filename%.*}_export.gcode" | cat /dev/stdin > $3
+    cat ${filename%.*}_export.gcode" | cat /dev/stdin > $3;
+(( $(stat -c %s $3) == 0 )) && rm $3;
