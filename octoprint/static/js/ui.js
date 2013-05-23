@@ -68,6 +68,11 @@ function ConnectionViewModel() {
         self.isReady(data.flags.ready);
         self.isLoading(data.flags.loading);
 
+        // Pass all this data to scratch
+        for (var name_ in data.flags) {
+            ScratchSensors.update(name_, data.flags[name_]);
+        }
+
         var connectionTab = $("#connection");
         if (self.previousIsOperational != self.isOperational()) {
             if (self.isOperational() && connectionTab.hasClass("in")) {
@@ -356,6 +361,10 @@ function TemperatureViewModel(settingsViewModel) {
         self.temperatures.target = self.temperatures.target.slice(-300);
         self.temperatures.actualBed = self.temperatures.actualBed.slice(-300);
         self.temperatures.targetBed = self.temperatures.targetBed.slice(-300);
+
+        for (var name_ in self.temperatures) {
+            ScratchSensors.update(name_, self.temperatures[name_][0]);
+        }
 
         self.updatePlot();
     }
@@ -707,6 +716,10 @@ function GcodeFilesViewModel() {
     });
 
     self.fromCurrentData = function(data) {
+        // Pass all this data to scratch /
+        for (var name_ in data.state) {
+            ScratchSensors.update(name_, data.state[name_]);
+        }
         self._processStateData(data.state);
     }
 
