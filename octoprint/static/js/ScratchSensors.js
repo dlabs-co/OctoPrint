@@ -13,10 +13,6 @@ ScratchSensors = {
 
         var evt = document.createEvent("CustomEvent");
 
-        console.log("Updating sensor " + name + " to val: " + value);
-        console.log("executing /usr/bin/python " +
-                path + " " + name + " " + value);
-
         evt.initCustomEvent(
             "execute",
             true,
